@@ -1,73 +1,38 @@
 package main
 
-import (
-	"encoding/json"
-	"fmt"
-	"log"
-)
+import "fmt"
 
-type Address struct {
-	Address  string
-	PostCode string
+type SaveLogInterface interface {
+	SaveLog()
 }
 
-type UserProfile struct {
-	Firstname string `json:"firstname"`
-	Lastname  string `json:"lastname"`
-	Age       int
-	Height    float32
-	Address   Address
-	Bill      struct {
-		BillAddress string
-	}
+func SaveLog(st SaveLogInterface) {
+	st.SaveLog()
 }
 
-func (u UserProfile) ToFullDesc() string {
-	return fmt.Sprintf("%s %s", u.Firstname, u.Lastname)
+type TransferBBL struct {
+	name string
+}
+
+func (tBBL *TransferBBL) SaveLog() {
+	tBBL.name = "test 1"
+	fmt.Println("save to database", tBBL.name)
+}
+
+type TransferKTB struct {
+	name string
+}
+
+func (tKTB TransferKTB) SaveLog() {
+	tKTB.name = "test 2"
+	fmt.Println("save to database", tKTB.name)
 }
 
 func main() {
-	fmt.Println("xx")
-	user := map[string]string{}
-	user["username"] = "nattapol"
-	user["password"] = "xxxxx"
-	fmt.Println(user)
-	fmt.Println(user["username"])
+	transA := TransferBBL{name: "BBL"}
+	transB := TransferKTB{name: "KTB"}
+	SaveLog(&transA)
+	SaveLog(transB)
 
-	userProfile := UserProfile{
-		Firstname: "nattapol1",
-		Lastname:  " xxxxxx",
-		Age:       21,
-	}
-	fmt.Println(userProfile)
-	userProfile.Address.PostCode = "10250"
-
-	fmt.Println(userProfile.ToFullDesc())
-
-	byteTxtJson, err := json.MarshalIndent(userProfile, "", " ")
-	if err != nil {
-		fmt.Println("err")
-	}
-	fmt.Println(string(byteTxtJson))
-
-	dataJson := `
-	{
-		"firstname": "nattapol2",
-		"lastname": " xxxxxx",
-		"Age": 21,
-		"Height": 180,
-		"Address": {
-		 "Address": "",
-		 "PostCode": "10330"
-		}
-	}`
-
-	var nat2Profile UserProfile
-	err = json.Unmarshal([]byte(dataJson), &nat2Profile)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(nat2Profile)
-
+	fmt.Println()
 }
