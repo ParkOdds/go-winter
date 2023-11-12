@@ -1,36 +1,16 @@
 package main
 
-import (
-	"fmt"
-)
-
-func GetMember() {
-	fmt.Println("please wait...")
-}
-func IsInSystem(username string) bool {
-	return true
-}
-
-func GetUserDetail(username string) (int, string) {
-	return 201, "manager"
-}
-
-func getDeparture(username string, departure *string) {
-	if username != "" {
-		*departure = "home"
-	}
-}
-
-func CheckLogin(username string, password string) {
-	if IsInSystem(username) {
-		fmt.Println("found user in system")
-		GetUserDetail(username)
-		departure := ""
-		getDeparture(username, &departure)
-	}
-}
+import "fmt"
 
 func main() {
-	GetMember()
+	fmt.Println("hello world")
 
+	// arr := []int{2, 4, 4,5}
+	arr := make([]int, 4) // make[type, amount of array]
+	arr[0] = 30           // assign specific array
+	fmt.Println(arr)
+
+	txt := "today is sunday"
+	fmt.Println(txt[0:5]) // slide
+	fmt.Println(len(txt)) // lenght
 }
