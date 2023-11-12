@@ -1,16 +1,51 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type Address struct {
+	Address  string
+	PostCode string
+}
+
+type UserProfile struct {
+	Firstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
+	Age       int
+	Height    float32
+	Address   Address
+	Bill      struct {
+		BillAddress string
+	}
+}
+
+func (u UserProfile) ToFullDesc() string {
+	return fmt.Sprintf("%s %s", u.Firstname, u.Lastname)
+}
 
 func main() {
-	fmt.Println("hello world")
+	fmt.Println("xx")
+	user := map[string]string{}
+	user["username"] = "nattapol"
+	user["password"] = "xxxxx"
+	fmt.Println(user)
+	fmt.Println(user["username"])
 
-	// arr := []int{2, 4, 4,5}
-	arr := make([]int, 4) // make[type, amount of array]
-	arr[0] = 30           // assign specific array
-	fmt.Println(arr)
+	userProfile := UserProfile{
+		Firstname: "nattapol1",
+		Lastname:  " xxxxxx",
+		Age:       21,
+	}
+	fmt.Println(userProfile)
+	userProfile.Address.PostCode = "10250"
 
-	txt := "today is sunday"
-	fmt.Println(txt[0:5]) // slide
-	fmt.Println(len(txt)) // lenght
+	fmt.Println(userProfile.ToFullDesc())
+
+	byteTxtJson, err := json.MarshalIndent(userProfile, "", " ")
+	if err != nil {
+		fmt.Println("err")
+	}
+	fmt.Println(string(byteTxtJson))
 }
